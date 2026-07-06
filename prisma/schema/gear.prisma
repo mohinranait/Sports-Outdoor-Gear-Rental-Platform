@@ -11,7 +11,7 @@ model Gear {
   pricePerDay  Int
   stock        Int      @default(10)
   images       String[]
-  availability Int
+  // availability Boolean @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
 }

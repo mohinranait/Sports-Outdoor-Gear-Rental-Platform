@@ -6,6 +6,7 @@ import { authRouter } from "./modules/auth/auth.route";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { categoriesRoutes } from "./modules/categories/categories.route";
 import { userRoutes } from "./modules/users/user.route";
+import { gearRoutes } from "./modules/gear/gear.routes";
 
 const app:Application  = express();
 
@@ -25,6 +26,7 @@ app.get('/api', (req,res) => {
 app.use('/api/auth', authRouter)
 app.use('/api/auth', userRoutes)
 app.use('/api/categories', categoriesRoutes)
+app.use('/api/provider/gear', gearRoutes)
 
 
 
