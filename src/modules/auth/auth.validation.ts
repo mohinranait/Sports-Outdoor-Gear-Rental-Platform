@@ -24,3 +24,19 @@ export const registerSchema = z.object({
 });
 
 export type RegisterInput = z.infer<typeof registerSchema>["body"];
+
+
+export const loginSchema = z.object({
+  body: z.object({
+    email: z
+      .string()
+      .trim()
+      .email("Invalid email"),
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .max(100),
+  })
+})
+
+export type TLoginInput = z.infer<typeof loginSchema>['body']
