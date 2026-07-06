@@ -5,6 +5,7 @@ import config from "./config";
 import { authRouter } from "./modules/auth/auth.route";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { categoriesRoutes } from "./modules/categories/categories.route";
+import { userRoutes } from "./modules/users/user.route";
 
 const app:Application  = express();
 
@@ -22,6 +23,7 @@ app.get('/api', (req,res) => {
 })
 
 app.use('/api/auth', authRouter)
+app.use('/api/auth', userRoutes)
 app.use('/api/categories', categoriesRoutes)
 
 

@@ -37,7 +37,23 @@ const loginUser = catchAsync(async (req: Request, res: Response, next: NextFunct
 })
 
 
+const userProfile = catchAsync(async (req: Request, res: Response) => {
+  const userId = req.user?.id as string;
+
+  const result = await authService.userProfile(userId)
+
+
+sendResponse(res, {
+    message: "Login success",
+    success: true,
+    statusCode: HttpStatus.OK,
+    data:  result
+  })
+})
+
+
 export const authController = {
   createUser,
-  loginUser
+  loginUser,
+  userProfile,
 } 
