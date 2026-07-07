@@ -2,3 +2,7 @@
 .env.local
 node_modules
 /generated/prisma
+dist
+
+.vercel
+note.txt

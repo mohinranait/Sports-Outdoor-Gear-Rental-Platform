@@ -22,8 +22,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-app.get('/api', (req,res) => {
-  res.send({message:"Success"})
+app.get('/', (req,res) => {
+  res.send({message:"Gear Up Server is running"})
 })
 
 app.use('/api/auth', authRouter)
