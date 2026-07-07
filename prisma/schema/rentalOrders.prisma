@@ -9,6 +9,7 @@ model RentalOrder {
   startDate     DateTime
   endDate       DateTime
   totalDays     Int
+  quantity   Decimal
 
   pricePerDay   Decimal
   totalAmount   Decimal
