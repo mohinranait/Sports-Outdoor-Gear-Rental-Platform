@@ -21,4 +21,7 @@ router.get('/rentals/:id',auth( Role.Customer), rentalOrderController.orderDetai
 router.get('/provider/orders',auth( Role.Provider), rentalOrderController.getOrdersForProvider)
 router.patch('/provider/orders/:id', validateRequest(updateOrderStatus), auth( Role.Provider), rentalOrderController.updateOrderStatusByProvider)
 
+
+router.get('/admin/rentals', auth( Role.Admin), rentalOrderController.getAllOrdersForAdmin  )
+
 export const rentalOrders = router;

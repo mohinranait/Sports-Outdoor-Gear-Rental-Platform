@@ -13,6 +13,7 @@ const createOrder = async (payload:TRentalOrderInput,customerId:string) => {
 
    const transactionId = `TXN-${nanoid(12)}`;
 
+  const totalAmount = Number(isExists.pricePerDay) * Number(quantity) * Number(payload.totalDays);
   const order = await prisma.rentalOrder.create(
     {
       data: {
@@ -20,26 +21,29 @@ const createOrder = async (payload:TRentalOrderInput,customerId:string) => {
         startDate: new Date(payload.startDate),
         endDate: new Date(payload.endDate),
         customerId,
-        transactionId,
         providerId: isExists.providerId,
         pricePerDay: isExists.pricePerDay,
-        totalAmount: Number(isExists.pricePerDay) * Number(quantity)
+        totalAmount: totalAmount,
+        payments: {
+          create:{
+            amount : totalAmount,
+            transactionId,
+          }
+        }
+        
       },
       include:{
-        customer:true
+        customer:true,
+        provider: true,
       }
     }
   )
 
 
-  const payment = await paymentService.sslPayment(order)
-
-
-  console.log({payment});
-  
+  const payment = await paymentService.sslPayment(order, transactionId )
+    
 
  return {
-  order,
   paymentUrl: payment.GatewayPageURL,
 };
 
@@ -89,6 +93,7 @@ const orderDetails = async (orderId:string, customerId:string) => {
             password: true,
           }
         },
+        payments:true,
       }
     }
   )
@@ -115,6 +120,7 @@ const getProviderOrders = async (providerId:string) => {
             password: true,
           }
         },
+        payments:true,
       }
     }
   )
@@ -166,10 +172,18 @@ const updateOrderStatusByProvider = async (providerId: string, orderId:string, p
   return order
 }
 
+
+// admin ordrs 
+const getAllOrdersForAdmin = async () => {
+  const orders = await prisma.rentalOrder.findMany();
+  return {orders}
+}
+
 export const rentalOrderService = {
   createOrder,
   getOrders,
   orderDetails,
   getProviderOrders,
-  updateOrderStatusByProvider
+  updateOrderStatusByProvider,
+  getAllOrdersForAdmin
 }

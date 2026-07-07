@@ -10,8 +10,6 @@ model RentalOrder {
   endDate       DateTime
   totalDays     Int
   quantity   Int
-  transactionId String @unique
-  tran_date     DateTime?
 
   pricePerDay   Decimal @db.Decimal(10,2)
   totalAmount   Decimal @db.Decimal(10,2)
@@ -25,4 +23,6 @@ model RentalOrder {
   customer      User          @relation("CustomerOrders", fields: [customerId], references: [id])
   provider      User          @relation("ProviderOrders", fields: [providerId], references: [id])
   gear          Gear @relation(fields: [gearId],references: [id])
+
+  payments Payment[]
 }

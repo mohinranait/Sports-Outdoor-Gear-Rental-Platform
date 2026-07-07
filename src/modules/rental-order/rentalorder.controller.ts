@@ -69,11 +69,24 @@ const updateOrderStatusByProvider = catchAsync(async (req: Request, res: Respons
   })
 })
 
+// single order for provider
+const getAllOrdersForAdmin = catchAsync(async (req: Request, res: Response) => {
+
+  const result = await rentalOrderService.getAllOrdersForAdmin()
+  sendResponse(res, {
+    message: "Successfull",
+    statusCode: HttpStatus.OK,
+    success: true,
+    data:  result,
+  })
+})
+
 
 export const rentalOrderController = {
   createOrder,
   getOrders,
   orderDetails,
   getOrdersForProvider,
-  updateOrderStatusByProvider
+  updateOrderStatusByProvider,
+  getAllOrdersForAdmin
 }

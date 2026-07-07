@@ -12,9 +12,8 @@ export type RentalOrderWithCustomer = Prisma.RentalOrderGetPayload<{
   };
 }>;
 
-const sslPayment = async (order: RentalOrderWithCustomer ) => {
+const sslPayment = async (order: RentalOrderWithCustomer, transactionId: string) => {
 
-  const transactionId = order.transactionId;
 
   const paymentPayload = {
     store_id: config.ssl_store_id,
@@ -63,30 +62,49 @@ const sslPayment = async (order: RentalOrderWithCustomer ) => {
 
 
 // success payment 
-const verifySSLPayment = async(valId:string) => {
+const verifySSLPayment = async (valId: string) => {
   const payment = await verifyPayment(valId)
   const transactionId = payment.tran_id;
   const paymentStatus = payment.status;
   const tran_date = payment.tran_date;
-  if(paymentStatus === "VALID"){
+  if (paymentStatus === "VALID") {
 
-    await prisma.rentalOrder.update(
+    await prisma.payment.update(
       {
-        where:{
+        where: {
           transactionId: transactionId
         },
         data: {
           status: "PAID",
-          tran_date: new Date(tran_date),
+          paidAt: new Date(tran_date),
+          method: payment.card_type
         }
       }
     )
 
 
-  }else if(paymentStatus === 'FAILED'){
-
-  }else if(paymentStatus === 'CANCELLED'){
-
+  } else if (paymentStatus === 'FAILED') {
+    await prisma.payment.update(
+      {
+        where: {
+          transactionId: transactionId
+        },
+        data: {
+          status: "FAILED",
+        }
+      }
+    )
+  } else if (paymentStatus === 'CANCELLED') {
+    await prisma.payment.update(
+      {
+        where: {
+          transactionId: transactionId
+        },
+        data: {
+          status: "CANCELLED",
+        }
+      }
+    )
   }
 
   return paymentStatus;
