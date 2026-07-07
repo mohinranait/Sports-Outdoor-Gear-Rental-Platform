@@ -15,6 +15,8 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
     data: result,
   })
 })
+
+
 const getOrders = catchAsync(async (req: Request, res: Response) => {
   const customerId = req.user?.id as string;
 

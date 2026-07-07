@@ -5,9 +5,7 @@ import { paymentService } from "../payment/payment.service";
 
 const createOrder = async (payload:TRentalOrderInput,customerId:string) => {
   const {gearId,quantity,} = payload;
-  // console.log({payload});
-  
-  
+
   const isExists = await prisma.gear.findUnique({where:{id:gearId}});
   if(!isExists){
     throw new Error("Gear not found")
@@ -40,7 +38,10 @@ const createOrder = async (payload:TRentalOrderInput,customerId:string) => {
   console.log({payment});
   
 
-  return order
+ return {
+  order,
+  paymentUrl: payment.GatewayPageURL,
+};
 
 }
 

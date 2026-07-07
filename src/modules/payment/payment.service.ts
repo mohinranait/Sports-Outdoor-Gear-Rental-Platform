@@ -1,5 +1,7 @@
 import config from "../../config"
 import { Prisma } from "../../../generated/prisma/client";
+import { verifyPayment } from "./payment.utils";
+import { prisma } from "../../lib/prisma";
 
 
 
@@ -20,9 +22,9 @@ const sslPayment = async (order: RentalOrderWithCustomer ) => {
     total_amount: order?.totalAmount,
     currency: "BDT",
     tran_id: transactionId,
-    success_url: "http://yoursite.com/success.php",
-    fail_url: "http://yoursite.com/fail.php",
-    cancel_url: "http://yoursite.com/cancel.php",
+    success_url: `${config.api_url}/api/payment/success`,
+    fail_url: `${config.api_url}/api/payment/fail`,
+    cancel_url: `${config.api_url}/api/payment/cancel`,
     cus_name: order?.customer.name,
     cus_email: order?.customer.email || 'N/A',
     cus_add1: "Dhaka",
@@ -58,6 +60,39 @@ const sslPayment = async (order: RentalOrderWithCustomer ) => {
   return data;
 }
 
+
+
+// success payment 
+const verifySSLPayment = async(valId:string) => {
+  const payment = await verifyPayment(valId)
+  const transactionId = payment.tran_id;
+  const paymentStatus = payment.status;
+  const tran_date = payment.tran_date;
+  if(paymentStatus === "VALID"){
+
+    await prisma.rentalOrder.update(
+      {
+        where:{
+          transactionId: transactionId
+        },
+        data: {
+          status: "PAID",
+          tran_date: new Date(tran_date),
+        }
+      }
+    )
+
+
+  }else if(paymentStatus === 'FAILED'){
+
+  }else if(paymentStatus === 'CANCELLED'){
+
+  }
+
+  return paymentStatus;
+}
+
 export const paymentService = {
-  sslPayment
+  sslPayment,
+  verifySSLPayment,
 }
