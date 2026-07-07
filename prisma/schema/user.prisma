@@ -11,6 +11,7 @@ model User {
   updatedAt DateTime   @default(now())
 
   gears Gear[]
+  reviews Review[]
 
   customerOrders    RentalOrder[] @relation("CustomerOrders")
   providerOrders    RentalOrder[] @relation("ProviderOrders")

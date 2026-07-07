@@ -8,7 +8,7 @@ model Gear {
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   rentalOrders   RentalOrder[]
-  // reviews        Review[]
+  reviews        Review[]
 
   
 

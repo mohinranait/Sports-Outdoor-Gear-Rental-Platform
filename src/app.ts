@@ -8,6 +8,7 @@ import { categoriesRoutes } from "./modules/categories/categories.route";
 import { userRoutes } from "./modules/users/user.route";
 import { gearRoutes } from "./modules/gear/gear.routes";
 import { rentalOrders } from "./modules/rental-order/rentalorder.route";
+import { reviewRoutes } from "./modules/review/review.route";
 
 const app:Application  = express();
 
@@ -29,6 +30,7 @@ app.use('/api', userRoutes)
 app.use('/api/categories', categoriesRoutes)
 app.use('/api', gearRoutes)
 app.use('/api', rentalOrders)
+app.use('/api/reviews', reviewRoutes)
 
 
 
