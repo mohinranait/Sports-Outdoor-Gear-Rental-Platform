@@ -22,7 +22,7 @@ router.delete('/provider/gear/:gearId', auth(Role.Provider, Role.Admin), gearCon
 
 // Public route
 router.get('/gear',  gearController.getAllGears)
-router.get('/gear/:gearId', gearController.getSingleGear)
+router.get('/gear/:id', gearController.getSingleGear)
 
 
 export const gearRoutes = router;

@@ -2,8 +2,15 @@ model Gear {
   id         String   @id @default(uuid())
   providerId String
   provider   User     @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  rentalOrders   RentalOrder[]
+  // reviews        Review[]
+
+  
 
   title        String
   brand        String?

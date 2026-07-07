@@ -48,7 +48,7 @@ const deleteGear = catchAsync(async (req: Request, res: Response) => {
 // get single gear
 const getSingleGear = catchAsync(async (req: Request, res: Response) => {
 
-  const gearId = req.params.gearId as string;
+  const gearId = req.params.id as string;
   const result = await gearService.getSingleGear(gearId)
   sendResponse(res, {
     message: "Get Successfull",

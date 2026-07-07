@@ -168,18 +168,11 @@ if (query.minPrice || query.maxPrice) {
 }
 
 
-  // if (query.isFeatured) {
-  //   andConditions.push({
-  //     isFeatured: Boolean(query.isFeatured)
-  //   })
-  // }
-
-
-  // if (query.status) {
-  //   andConditions.push({
-  //     status: query.status
-  //   })
-  // }
+  if (query.status) {
+    andConditions.push({
+      status: query.status
+    })
+  }
 
 
 
