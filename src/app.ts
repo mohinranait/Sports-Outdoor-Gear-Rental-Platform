@@ -9,6 +9,7 @@ import { userRoutes } from "./modules/users/user.route";
 import { gearRoutes } from "./modules/gear/gear.routes";
 import { rentalOrders } from "./modules/rental-order/rentalorder.route";
 import { reviewRoutes } from "./modules/review/review.route";
+import { notFound } from "./middleware/notfound";
 
 const app:Application  = express();
 
@@ -33,7 +34,7 @@ app.use('/api', rentalOrders)
 app.use('/api/reviews', reviewRoutes)
 
 
-
+app.use(notFound)
 app.use(globalErrorHandler)
 
 export default app;

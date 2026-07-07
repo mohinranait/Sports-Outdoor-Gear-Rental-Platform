@@ -10,15 +10,15 @@ const router = Router();
 
 router.post('/provider/gear',
   validateRequest(gearSchema),
-  auth(Role.Provider, Role.Admin),
+  auth(Role.Provider),
   gearController.createGear
 )
 router.put('/provider/gear/:gearId',
   validateRequest(gearSchema),
-  auth(Role.Provider, Role.Admin),
-  auth(Role.Provider, Role.Admin), gearController.updateGear
+  auth(Role.Provider),
+   gearController.updateGear
 )
-router.delete('/provider/gear/:gearId', auth(Role.Provider, Role.Admin), gearController.deleteGear)
+router.delete('/provider/gear/:gearId', auth(Role.Provider), gearController.deleteGear)
 
 // Public route
 router.get('/gear',  gearController.getAllGears)
