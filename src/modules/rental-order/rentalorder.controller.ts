@@ -17,6 +17,7 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
 })
 const getOrders = catchAsync(async (req: Request, res: Response) => {
    const customerId = req.user?.id as string;
+
     const {ordrs} = await rentalOrderService.getOrders(customerId);
     sendResponse(res, {
     message: "Successfull",

@@ -13,7 +13,7 @@ router.post('/rentals',
   rentalOrderController.createOrder
 
 )
-router.get('/rentals', rentalOrderController.getOrders)
-router.post('/rentals/:id', rentalOrderController.orderDetails)
+router.get('/rentals', auth( Role.Customer), rentalOrderController.getOrders)
+router.get('/rentals/:id',auth( Role.Customer), rentalOrderController.orderDetails)
 
 export const rentalOrders = router;
