@@ -20,7 +20,10 @@ enum RentalStatus {
 
 
 
-
+enum PaymentProvider {
+  SSLCOMMERZ
+  STRIPE
+}
 
 enum PaymentStatus {
   PENDING

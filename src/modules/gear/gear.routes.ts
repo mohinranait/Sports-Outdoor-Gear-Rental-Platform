@@ -13,6 +13,7 @@ router.post('/provider/gear',
   auth(Role.Provider),
   gearController.createGear
 )
+
 router.put('/provider/gear/:gearId',
   validateRequest(gearSchema),
   auth(Role.Provider),

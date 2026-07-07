@@ -13,6 +13,8 @@ model Payment {
 
   status PaymentStatus @default(PENDING)
 
+  provider PaymentProvider @default(SSLCOMMERZ)
+
   gatewayTransactionId String?
   gatewayValidationId  String?
 
