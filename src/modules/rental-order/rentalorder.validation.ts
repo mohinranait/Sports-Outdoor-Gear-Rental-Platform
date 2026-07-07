@@ -22,3 +22,15 @@ export const rentalOrderSchema = z.object({
 export type TRentalOrderInput = z.infer<typeof rentalOrderSchema>['body'];
 
 
+
+
+
+export const updateOrderStatus = z.object({
+  body: z.object({
+    status: z.enum(['PLACED',"CONFIRMED","PAID","PICKED_UP","RETURNED","CANCELLED"])
+  })
+}) 
+
+export type ProviderUpdateOrderStatus = z.infer<typeof updateOrderStatus>['body'];
+
+

@@ -1,5 +1,5 @@
 import { prisma } from "../../lib/prisma";
-import { TRentalOrderInput } from "./rentalorder.validation"
+import { ProviderUpdateOrderStatus, TRentalOrderInput } from "./rentalorder.validation"
 
 const createOrder = async (payload:TRentalOrderInput,customerId:string) => {
   const {gearId,quantity,} = payload;
@@ -80,8 +80,79 @@ const orderDetails = async (orderId:string, customerId:string) => {
 }
 
 
+
+// get all orders for provider
+const getProviderOrders = async (providerId:string) => {
+  const orders = await prisma.rentalOrder.findMany(
+    {
+      where: {providerId},
+      include: {
+        gear: true,
+        customer: {
+          omit: {
+            password: true,
+          }
+        },
+        provider: {
+          omit: {
+            password: true,
+          }
+        },
+      }
+    }
+  )
+
+  return {orders}
+}
+
+//get single order provider
+const updateOrderStatusByProvider = async (providerId: string, orderId:string, payload: ProviderUpdateOrderStatus) => {
+  
+  const isExistsOrder = await prisma.rentalOrder.findUniqueOrThrow(
+    {
+      where: {
+        providerId,
+        id: orderId
+      },
+      
+    }
+  )
+
+
+  const {status} = payload;
+
+  const order = await prisma.rentalOrder.update(
+    {
+      where: {
+        id: orderId,
+      },
+      data: {
+        ...isExistsOrder,
+        status
+      },
+      include: {
+        gear: true,
+        customer: {
+          omit: {
+            password: true,
+          }
+        },
+        provider: {
+          omit: {
+            password: true,
+          }
+        },
+      }
+    }
+  )
+
+  return order
+}
+
 export const rentalOrderService = {
   createOrder,
   getOrders,
-  orderDetails
+  orderDetails,
+  getProviderOrders,
+  updateOrderStatusByProvider
 }

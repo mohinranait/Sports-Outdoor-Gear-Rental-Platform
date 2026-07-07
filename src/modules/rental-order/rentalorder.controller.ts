@@ -16,16 +16,16 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
   })
 })
 const getOrders = catchAsync(async (req: Request, res: Response) => {
-   const customerId = req.user?.id as string;
+  const customerId = req.user?.id as string;
 
-    const {ordrs} = await rentalOrderService.getOrders(customerId);
-    sendResponse(res, {
+  const { ordrs } = await rentalOrderService.getOrders(customerId);
+  sendResponse(res, {
     message: "Successfull",
     statusCode: HttpStatus.OK,
     success: true,
-    data: {ordrs},
+    data: { ordrs },
   })
- })
+})
 
 // get order details
 const orderDetails = catchAsync(async (req: Request, res: Response) => {
@@ -41,8 +41,37 @@ const orderDetails = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+// get all provider orders
+const getOrdersForProvider = catchAsync(async (req: Request, res: Response) => {
+  const providerId = req.user?.id as string;
+  const { orders } = await rentalOrderService.getProviderOrders(providerId)
+  sendResponse(res, {
+    message: "Successfull",
+    statusCode: HttpStatus.OK,
+    success: true,
+    data: { orders },
+  })
+})
+
+// single order for provider
+const updateOrderStatusByProvider = catchAsync(async (req: Request, res: Response) => {
+  const providerId = req.user?.id as string;
+  const orderId = req.params.id as string;
+  const payload = req.body;
+  const result = await rentalOrderService.updateOrderStatusByProvider(providerId, orderId,payload)
+  sendResponse(res, {
+    message: "Successfull",
+    statusCode: HttpStatus.OK,
+    success: true,
+    data: result,
+  })
+})
+
+
 export const rentalOrderController = {
   createOrder,
   getOrders,
-  orderDetails
+  orderDetails,
+  getOrdersForProvider,
+  updateOrderStatusByProvider
 }
