@@ -11,5 +11,6 @@ export default {
   app_url: process.env.APP_URL,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUND!,
   jwt_access_secret: process.env.JWT_ACCESS_SECRET!,
-  
+  ssl_store_id : process.env.SSL_STORE_ID,
+  ssl_store_password : process.env.SSL_STORE_PASSWORD,
 }

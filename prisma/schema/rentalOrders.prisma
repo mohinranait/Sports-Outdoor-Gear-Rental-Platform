@@ -10,6 +10,7 @@ model RentalOrder {
   endDate       DateTime
   totalDays     Int
   quantity   Decimal
+  transactionId String?
 
   pricePerDay   Decimal
   totalAmount   Decimal

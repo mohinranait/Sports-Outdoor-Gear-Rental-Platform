@@ -1,14 +1,19 @@
 import { prisma } from "../../lib/prisma";
+import { nanoid } from "nanoid";
 import { ProviderUpdateOrderStatus, TRentalOrderInput } from "./rentalorder.validation"
+import { paymentService } from "../payment/payment.service";
 
 const createOrder = async (payload:TRentalOrderInput,customerId:string) => {
   const {gearId,quantity,} = payload;
-  console.log({payload});
+  // console.log({payload});
+  
   
   const isExists = await prisma.gear.findUnique({where:{id:gearId}});
   if(!isExists){
     throw new Error("Gear not found")
   }
+
+   const transactionId = `TXN-${nanoid(12)}`;
 
   const order = await prisma.rentalOrder.create(
     {
@@ -17,12 +22,23 @@ const createOrder = async (payload:TRentalOrderInput,customerId:string) => {
         startDate: new Date(payload.startDate),
         endDate: new Date(payload.endDate),
         customerId,
+        transactionId,
         providerId: isExists.providerId,
         pricePerDay: isExists.pricePerDay,
-        totalAmount: isExists.pricePerDay * quantity
+        totalAmount: Number(isExists.pricePerDay) * Number(quantity)
+      },
+      include:{
+        customer:true
       }
     }
   )
+
+
+  const payment = await paymentService.sslPayment(order)
+
+
+  console.log({payment});
+  
 
   return order
 
